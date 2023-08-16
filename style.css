@@ -10,4 +10,14 @@ body {
   min-height: 100vh;
   font-family: 'Arsenal', sans-serif;
   font-family: 'Josefin Sans', sans-serif;
+  /* background: whitesmoke; */
+}
+
+h1{
+  margin-top: 100px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 50px;
+  letter-spacing: 5px;
+  
 }
