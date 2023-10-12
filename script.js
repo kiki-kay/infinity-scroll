@@ -4,15 +4,28 @@
 const imageContainer = document.getElementById('imageContainer');
 const loader = document.getElementById('loader');
 
-//Set global variable for the photos coming from via Unsplash Api to accomodate with the value changing everytime by requests.
+let ready = false;// For creating an event to load another butch of images.
+let imagesLoaded = 0;//Count numbers of images loaded to match with the number limit of images load.   
+let totalImages = 0;//Initialise a var for setting number limit on images load within another func. 
+//Set global variable for the photos coming from via Unsplash Api to accomodate with the values changing everytime by requests.
 let photosArray = [];   
 
 //Unsplash Api
-const count = 10 ;
+const count = 30 ;
 const apiKey = '5hSAcrO4UMHUCHRRe21GmN1xwqM1Qnlq-Jjbsu_H_IE';
 const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
 
-//*Dry coding: A helper fucntion for the 2nd Func to set attributes on DOM Elements without repeating setAttribute().
+// 5th Func: Check if 30 images are loaded and ready for another load. Run on each indivisual image.
+function imageLoaded(){
+    console.log('Image loaded');
+    imagesLoaded++;//Count the numebr of loaded images.
+    if (imagesLoaded === totalImages) {
+        ready = true;//Make the event state ready for another load.
+        console.log('ready =', ready);
+    } 
+}
+
+//3rd Fun, *Dry coding: A helper fucntion for the 2nd Func to set attributes on DOM Elements without repeating setAttribute().
 function setAttributes(element,attributes){
     for (const key in attributes) {
         element.setAttribute(key, attributes[key]);
@@ -21,6 +34,11 @@ function setAttributes(element,attributes){
 
 // 2nd Func: *The core logic: Create elements for links & photos and then add to DOM.
 function displayPhotos(){
+    
+    //Check number/length of photos in photosArray and keep the length to compare with number of images loaded. 
+    totalImages = photosArray.length;
+    console.log('Total images', totalImages);
+
     //Run function for each object/data in photosArray[].
     photosArray.forEach((photo) => {
         const imgPallet = document.createElement('a');//Create element(as a pallet) for <a> to link up with Unsplash.
@@ -44,6 +62,9 @@ function displayPhotos(){
             title: photo.alt_description,
         });
 
+        // Add event listener, check when each triggered event is finished loading.
+        img.addEventListener('load', imageLoaded);
+
         //Put <img> on <a>, then contain both inside imageContainer element/id.
         imgPallet.appendChild(img);
         imageContainer.appendChild(imgPallet);
@@ -62,6 +83,17 @@ async function getPhotos() {
         //Catch error here;
     }
 }
+
+//4th Func: Core logic for keep displaying images when user scrolling near the bottom of the page.
+window.addEventListener('scroll', () => {
+    //console.log('scrolled');//Check how the e is triggered.
+    // Load and display more photos with the event is triggered when scrolled near the bottom by setting the height limitation and the number of loaded images became 30. 
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && ready) {
+        ready = false;// Will only be ready again when anothe 30 images loaded.
+        getPhotos();
+        //console.log('Load more!');//Check if loaded.
+    } 
+});
 
 //Call getPhotos func
 getPhotos();
