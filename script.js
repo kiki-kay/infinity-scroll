@@ -4,9 +4,10 @@
 const imageContainer = document.getElementById('imageContainer');
 const loader = document.getElementById('loader');
 
+// Controll event for loading and the number of images to be loaded.
 let ready = false;// For creating an event to load another butch of images.
-let imagesLoaded = 0;//Count numbers of images loaded to match with the number limit of images load.   
-let totalImages = 0;//Initialise a var for setting number limit on images load within another func. 
+let imagesLoaded = 0;//Counting numbers of images loaded to match with the number limit of images load.   
+let totalImages = 0;//Initialise a var for setting a number limit of images load within another func. 
 //Set global variable for the photos coming from via Unsplash Api to accomodate with the values changing everytime by requests.
 let photosArray = [];   
 
@@ -17,8 +18,9 @@ const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&coun
 
 // 5th Func: Check if 30 images are loaded and ready for another load. Run on each indivisual image.
 function imageLoaded(){
-    console.log('Image loaded');
+    //console.log('Image loaded');
     imagesLoaded++;//Count the numebr of loaded images.
+    console.log(imagesLoaded);
     if (imagesLoaded === totalImages) {
         ready = true;//Make the event state ready for another load.
         console.log('ready =', ready);
@@ -34,7 +36,7 @@ function setAttributes(element,attributes){
 
 // 2nd Func: *The core logic: Create elements for links & photos and then add to DOM.
 function displayPhotos(){
-    
+    imagesLoaded = 0;//Reset the counting number of loaded images.
     //Check number/length of photos in photosArray and keep the length to compare with number of images loaded. 
     totalImages = photosArray.length;
     console.log('Total images', totalImages);
@@ -89,7 +91,7 @@ window.addEventListener('scroll', () => {
     //console.log('scrolled');//Check how the e is triggered.
     // Load and display more photos with the event is triggered when scrolled near the bottom by setting the height limitation and the number of loaded images became 30. 
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000 && ready) {
-        ready = false;// Will only be ready again when anothe 30 images loaded.
+        ready = false;// Will only be ready again when another 30 images loaded.
         getPhotos();
         //console.log('Load more!');//Check if loaded.
     } 
