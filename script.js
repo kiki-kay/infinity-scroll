@@ -12,7 +12,7 @@ let totalImages = 0;//Initialise a var for setting a number limit of images load
 let photosArray = [];   
 
 //Unsplash Api
-const count = 30 ;
+const count = 15 ;
 const apiKey = '5hSAcrO4UMHUCHRRe21GmN1xwqM1Qnlq-Jjbsu_H_IE';
 const apiUrl = `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=${count}`;
 
@@ -23,6 +23,7 @@ function imageLoaded(){
     console.log(imagesLoaded);
     if (imagesLoaded === totalImages) {
         ready = true;//Make the event state ready for another load.
+        loader.hidden = true;
         console.log('ready =', ready);
     } 
 }
